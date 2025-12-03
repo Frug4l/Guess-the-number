@@ -174,3 +174,15 @@ class GuessNumberGame:
             # Очищаем поле ввода
             self.entry.delete(0, tk.END)
 
+            except ValueError as e:
+                if "Пустой ввод" in str(e):
+                    messagebox.showwarning("Ошибка", "Пожалуйста, введите число")
+                elif "Число вне диапазона" in str(e):
+                    messagebox.showwarning("Ошибка", "Число должно быть от 1 до 100")
+                else:
+                    messagebox.showerror("Ошибка", "Пожалуйста, введите целое число")
+                self.entry.delete(0, tk.END)
+            
+                except Exception as e:
+                messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
+
