@@ -87,3 +87,55 @@ class GuessNumberGame:
         # Текстовое поле для результата
         self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
         self.result_text.pack(pady=10)
+        
+    def create_widgets(self):
+        main_frame = tk.Frame(self.root, padx=20, pady=20)
+        main_frame.pack(fill=tk.BOTH, expand=True)
+        
+        # Заголовок
+        title_label = tk.Label(
+            main_frame, 
+            text="Угадай число от 1 до 100", 
+            font=("Arial", 16, "bold")
+        )
+        title_label.pack(pady=10)
+        
+        # Описание
+        self.description_label = tk.Label(
+            main_frame,
+            text="Я загадал число от 1 до 100. Попробуй угадать!",
+            font=("Arial", 12)
+        )
+        self.description_label.pack(pady=5)
+        
+        # Счетчик попыток
+        self.counter_label = tk.Label(
+            main_frame,
+            text="Попытки: 0",
+            font=("Arial", 12)
+        )
+        self.counter_label.pack(pady=5)
+        
+        # Поле для ввода
+        input_frame = tk.Frame(main_frame)
+        input_frame.pack(pady=10)
+        
+        tk.Label(input_frame, text="Ваше число:").pack(side=tk.LEFT, padx=5)
+        
+        self.entry = tk.Entry(input_frame, width=15)
+        self.entry.pack(side=tk.LEFT, padx=5)
+        self.entry.bind("<Return>", lambda event: self.check_guess())
+        
+        # Кнопка проверки
+        self.check_button = tk.Button(
+            main_frame,
+            text="Проверить",
+            command=self.check_guess,
+            width=15
+        )
+        self.check_button.pack(pady=10)
+        
+        # Текстовое поле для результата
+        self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
+        self.result_text.pack(pady=10)
+
