@@ -138,4 +138,21 @@ class GuessNumberGame:
         # Текстовое поле для результата
         self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
         self.result_text.pack(pady=10)
+        
+    def check_guess(self):
+        try:
+            # Получаем ввод
+            guess_text = self.entry.get().strip()
+            
+            # Проверка на пустой ввод
+            if not guess_text:
+                raise ValueError("Пустой ввод")
+            
+            guess = int(guess_text)
+            if guess < 1 or guess > 100:
+                raise ValueError("Число вне диапазона 1-100")
+            
+            self.attempts += 1
+            self.counter_label.config(text="Попытки: " + str(self.attempts))
+            self.result_text.config(state=tk.NORMAL)
 
