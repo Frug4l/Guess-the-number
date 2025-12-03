@@ -156,3 +156,21 @@ class GuessNumberGame:
             self.counter_label.config(text="Попытки: " + str(self.attempts))
             self.result_text.config(state=tk.NORMAL)
 
+            if guess < self.secret_number:
+                self.result_text.insert(tk.END, str(guess) + " — Загаданное число больше\n")
+            elif guess > self.secret_number:
+                self.result_text.insert(tk.END, str(guess) + " — Загаданное число меньше\n")
+            else:
+                self.result_text.insert(tk.END, "Ура! Вы угадали число " + str(self.secret_number) + 
+                                      " за " + str(self.attempts) + " попыток!\n")
+                self.check_button.config(state=tk.DISABLED)
+                self.entry.config(state=tk.DISABLED)
+            
+            # Отключаем редактирование
+            self.result_text.config(state=tk.DISABLED)
+    
+            self.result_text.see(tk.END)
+            
+            # Очищаем поле ввода
+            self.entry.delete(0, tk.END)
+
