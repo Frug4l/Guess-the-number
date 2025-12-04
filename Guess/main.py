@@ -215,3 +215,20 @@ class GuessNumberGame:
             # ОБРАБОТКА ИСКЛЮЧЕНИЙ при изменении размера
             messagebox.showerror("Ошибка", "Не удалось изменить размер окна: " + str(e))
 
+    def restart_game(self):
+        """Начать новую игру"""
+        self.secret_number = random.randint(1, 100)
+        self.attempts = 0
+        self.counter_label.config(text="Попытки: 0")
+        
+        # Очищаем поле результатов
+        self.result_text.config(state=tk.NORMAL)
+        self.result_text.delete(1.0, tk.END)
+        self.result_text.insert(tk.END, "Начата новая игра! Угадайте число от 1 до 100\n")
+        self.result_text.config(state=tk.DISABLED)
+        
+        # Активируем элементы
+        self.check_button.config(state=tk.NORMAL)
+        self.entry.config(state=tk.NORMAL)
+        self.entry.delete(0, tk.END)
+        self.entry.focus()
