@@ -186,3 +186,32 @@ class GuessNumberGame:
                 except Exception as e:
                 messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
 
+    def resize_window(self):
+        """Настройка размеров окна - обязательное требование"""
+        try:
+            # Диалог для изменения ширины
+            width = simpledialog.askinteger(
+                "Ширина окна",
+                "Введите ширину окна (400-1200):",
+                initialvalue=self.root.winfo_width(),
+                minvalue=400,
+                maxvalue=1200
+            )
+            
+            # Диалог для изменения высоты
+            height = simpledialog.askinteger(
+                "Высота окна",
+                "Введите высоту окна (300-800):",
+                initialvalue=self.root.winfo_height(),
+                minvalue=300,
+                maxvalue=800
+            )
+            
+            # Применяем новые размеры
+            if width and height:
+                self.root.geometry(str(width) + "x" + str(height))
+                
+        except Exception as e:
+            # ОБРАБОТКА ИСКЛЮЧЕНИЙ при изменении размера
+            messagebox.showerror("Ошибка", "Не удалось изменить размер окна: " + str(e))
+
