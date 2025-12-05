@@ -30,7 +30,7 @@ class GuessNumberGame:
         file_menu.add_separator()
         file_menu.add_command(label="Выход", command=self.root.quit)
 
-        # Меню "Настройки" (обязательное требование - настройка размеров окна)
+
         settings_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Настройки", menu=settings_menu)
         settings_menu.add_command(
@@ -219,12 +219,12 @@ class GuessNumberGame:
         messagebox.showinfo("О программе", about)
 
 
-# Запуск приложения
+
 if __name__ == "__main__":
     root = tk.Tk()
     game = GuessNumberGame(root)
 
-    # Центрирование окна
+
     root.update_idletasks()
     width = root.winfo_width()
     height = root.winfo_height()
@@ -232,7 +232,7 @@ if __name__ == "__main__":
     y = (root.winfo_screenheight() // 2) - (height // 2)
     root.geometry(str(width) + 'x' + str(height) + '+' + str(x) + '+' + str(y))
 
-    # Фокус на поле ввода
+
     game.entry.focus()
 
     root.mainloop()
