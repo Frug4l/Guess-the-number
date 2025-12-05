@@ -1,54 +1,61 @@
 import tkinter as tk
+from tkinter import messagebox, simpledialog
 import random
+
 
 class GuessNumberGame:
     def __init__(self, root):
         self.root = root
         self.root.title("Угадай число")
         self.root.geometry("500x400")
-        
+
         # Переменные игры
         self.secret_number = random.randint(1, 100)
         self.attempts = 0
-        
+
+        # Создание интерфейса
+        self.create_widgets()
+
+        # Меню
+        self.create_menu()
+
     def create_menu(self):
-        """Создание меню приложения"""
         menubar = tk.Menu(self.root)
         self.root.config(menu=menubar)
-        
+
+        # Меню "Файл"
         file_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Файл", menu=file_menu)
         file_menu.add_command(label="Новая игра", command=self.restart_game)
         file_menu.add_separator()
         file_menu.add_command(label="Выход", command=self.root.quit)
-        
+
+        # Меню "Настройки" (обязательное требование - настройка размеров окна)
         settings_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Настройки", menu=settings_menu)
         settings_menu.add_command(
-            label="Изменить размер окна", 
-            command=self.resize_window  
+            label="Изменить размер окна",
+            command=self.resize_window  # обязательная функциональность
         )
-        
+
         # Меню "Справка"
         help_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="Справка", menu=help_menu)
         help_menu.add_command(label="Правила", command=self.show_rules)
         help_menu.add_command(label="О программе", command=self.show_about)
-        
+
     def create_widgets(self):
-        """Создание основных виджетов игры"""
-        # Основной фрейм
         main_frame = tk.Frame(self.root, padx=20, pady=20)
         main_frame.pack(fill=tk.BOTH, expand=True)
-        
+
         # Заголовок
         title_label = tk.Label(
-            main_frame, 
-            text="Угадай число от 1 до 100", 
+            main_frame,
+            text="Угадай число от 1 до 100",
             font=("Arial", 16, "bold")
         )
         title_label.pack(pady=10)
-        
+
         # Описание
         self.description_label = tk.Label(
             main_frame,
@@ -56,7 +63,7 @@ class GuessNumberGame:
             font=("Arial", 12)
         )
         self.description_label.pack(pady=5)
-        
+
         # Счетчик попыток
         self.counter_label = tk.Label(
             main_frame,
@@ -64,17 +71,17 @@ class GuessNumberGame:
             font=("Arial", 12)
         )
         self.counter_label.pack(pady=5)
-        
+
         # Поле для ввода
         input_frame = tk.Frame(main_frame)
         input_frame.pack(pady=10)
-        
+
         tk.Label(input_frame, text="Ваше число:").pack(side=tk.LEFT, padx=5)
-        
+
         self.entry = tk.Entry(input_frame, width=15)
         self.entry.pack(side=tk.LEFT, padx=5)
         self.entry.bind("<Return>", lambda event: self.check_guess())
-        
+
         # Кнопка проверки
         self.check_button = tk.Button(
             main_frame,
@@ -83,77 +90,31 @@ class GuessNumberGame:
             width=15
         )
         self.check_button.pack(pady=10)
-        
+
         # Текстовое поле для результата
         self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
         self.result_text.pack(pady=10)
-        
-    def create_widgets(self):
-        main_frame = tk.Frame(self.root, padx=20, pady=20)
-        main_frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Заголовок
-        title_label = tk.Label(
-            main_frame, 
-            text="Угадай число от 1 до 100", 
-            font=("Arial", 16, "bold")
-        )
-        title_label.pack(pady=10)
-        
-        # Описание
-        self.description_label = tk.Label(
-            main_frame,
-            text="Я загадал число от 1 до 100. Попробуй угадать!",
-            font=("Arial", 12)
-        )
-        self.description_label.pack(pady=5)
-        
-        # Счетчик попыток
-        self.counter_label = tk.Label(
-            main_frame,
-            text="Попытки: 0",
-            font=("Arial", 12)
-        )
-        self.counter_label.pack(pady=5)
-        
-        # Поле для ввода
-        input_frame = tk.Frame(main_frame)
-        input_frame.pack(pady=10)
-        
-        tk.Label(input_frame, text="Ваше число:").pack(side=tk.LEFT, padx=5)
-        
-        self.entry = tk.Entry(input_frame, width=15)
-        self.entry.pack(side=tk.LEFT, padx=5)
-        self.entry.bind("<Return>", lambda event: self.check_guess())
-        
-        # Кнопка проверки
-        self.check_button = tk.Button(
-            main_frame,
-            text="Проверить",
-            command=self.check_guess,
-            width=15
-        )
-        self.check_button.pack(pady=10)
-        
-        # Текстовое поле для результата
-        self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
-        self.result_text.pack(pady=10)
-        
+
     def check_guess(self):
         try:
-            # Получаем ввод
             guess_text = self.entry.get().strip()
-            
+
             # Проверка на пустой ввод
             if not guess_text:
                 raise ValueError("Пустой ввод")
-            
+
+            # Преобразуем в число
             guess = int(guess_text)
+
+            # Проверка диапазона
             if guess < 1 or guess > 100:
                 raise ValueError("Число вне диапазона 1-100")
-            
+
+            # Основная логика игры
             self.attempts += 1
             self.counter_label.config(text="Попытки: " + str(self.attempts))
+
+            # Включаем текстовое поле для записи
             self.result_text.config(state=tk.NORMAL)
 
             if guess < self.secret_number:
@@ -161,33 +122,48 @@ class GuessNumberGame:
             elif guess > self.secret_number:
                 self.result_text.insert(tk.END, str(guess) + " — Загаданное число меньше\n")
             else:
-                self.result_text.insert(tk.END, "Ура! Вы угадали число " + str(self.secret_number) + 
-                                      " за " + str(self.attempts) + " попыток!\n")
+                self.result_text.insert(tk.END, "🎉 Ура! Вы угадали число " + str(self.secret_number) +
+                                        " за " + str(self.attempts) + " попыток!\n")
                 self.check_button.config(state=tk.DISABLED)
                 self.entry.config(state=tk.DISABLED)
-            
+
             # Отключаем редактирование
             self.result_text.config(state=tk.DISABLED)
-    
+
             self.result_text.see(tk.END)
-            
-            # Очищаем поле ввода
+
             self.entry.delete(0, tk.END)
 
-            except ValueError as e:
-                if "Пустой ввод" in str(e):
-                    messagebox.showwarning("Ошибка", "Пожалуйста, введите число")
-                elif "Число вне диапазона" in str(e):
-                    messagebox.showwarning("Ошибка", "Число должно быть от 1 до 100")
-                else:
-                    messagebox.showerror("Ошибка", "Пожалуйста, введите целое число")
-                self.entry.delete(0, tk.END)
-            
-                except Exception as e:
-                messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
+        except ValueError as e:
+            if "Пустой ввод" in str(e):
+                messagebox.showwarning("Ошибка", "Пожалуйста, введите число")
+            elif "Число вне диапазона" in str(e):
+                messagebox.showwarning("Ошибка", "Число должно быть от 1 до 100")
+            else:
+                messagebox.showerror("Ошибка", "Пожалуйста, введите целое число")
+            self.entry.delete(0, tk.END)
+
+        except Exception as e:
+            messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
+
+    def restart_game(self):
+        self.secret_number = random.randint(1, 100)
+        self.attempts = 0
+        self.counter_label.config(text="Попытки: 0")
+
+        # Очищаем поле результатов
+        self.result_text.config(state=tk.NORMAL)
+        self.result_text.delete(1.0, tk.END)
+        self.result_text.insert(tk.END, "Начата новая игра! Угадайте число от 1 до 100\n")
+        self.result_text.config(state=tk.DISABLED)
+
+        # Активируем элементы
+        self.check_button.config(state=tk.NORMAL)
+        self.entry.config(state=tk.NORMAL)
+        self.entry.delete(0, tk.END)
+        self.entry.focus()
 
     def resize_window(self):
-        """Настройка размеров окна - обязательное требование"""
         try:
             # Диалог для изменения ширины
             width = simpledialog.askinteger(
@@ -197,7 +173,7 @@ class GuessNumberGame:
                 minvalue=400,
                 maxvalue=1200
             )
-            
+
             # Диалог для изменения высоты
             height = simpledialog.askinteger(
                 "Высота окна",
@@ -206,35 +182,15 @@ class GuessNumberGame:
                 minvalue=300,
                 maxvalue=800
             )
-            
+
             # Применяем новые размеры
             if width and height:
                 self.root.geometry(str(width) + "x" + str(height))
-                
+
         except Exception as e:
-            # ОБРАБОТКА ИСКЛЮЧЕНИЙ при изменении размера
             messagebox.showerror("Ошибка", "Не удалось изменить размер окна: " + str(e))
 
-    def restart_game(self):
-        """Начать новую игру"""
-        self.secret_number = random.randint(1, 100)
-        self.attempts = 0
-        self.counter_label.config(text="Попытки: 0")
-        
-        # Очищаем поле результатов
-        self.result_text.config(state=tk.NORMAL)
-        self.result_text.delete(1.0, tk.END)
-        self.result_text.insert(tk.END, "Начата новая игра! Угадайте число от 1 до 100\n")
-        self.result_text.config(state=tk.DISABLED)
-        
-        # Активируем элементы
-        self.check_button.config(state=tk.NORMAL)
-        self.entry.config(state=tk.NORMAL)
-        self.entry.delete(0, tk.END)
-        self.entry.focus()
-
     def show_rules(self):
-        """Показать правила игры"""
         rules = """
         Правила игры:
         1. Компьютер загадывает число от 1 до 100
@@ -245,20 +201,38 @@ class GuessNumberGame:
         4. Цель: угадать число за минимальное количество попыток
         """
         messagebox.showinfo("Правила игры", rules)
-    
+
     def show_about(self):
-        """Показать информацию о программе"""
         about = """
         Игра "Угадай число"
-        
+
         Лабораторная работа по программированию
-        
+
         Выполненные требования:
         - Меню приложения
         - Настройка размеров окна
         - Обработка исключений
-        
+
         Все исключения обрабатываются, 
         программа не завершается при ошибках.
         """
         messagebox.showinfo("О программе", about)
+
+
+# Запуск приложения
+if __name__ == "__main__":
+    root = tk.Tk()
+    game = GuessNumberGame(root)
+
+    # Центрирование окна
+    root.update_idletasks()
+    width = root.winfo_width()
+    height = root.winfo_height()
+    x = (root.winfo_screenwidth() // 2) - (width // 2)
+    y = (root.winfo_screenheight() // 2) - (height // 2)
+    root.geometry(str(width) + 'x' + str(height) + '+' + str(x) + '+' + str(y))
+
+    # Фокус на поле ввода
+    game.entry.focus()
+
+    root.mainloop()
