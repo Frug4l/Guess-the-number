@@ -83,8 +83,10 @@ class GuessNumberGame:
         tk.Label(input_frame, text="Ваше число:", font=("Arial", 11)).pack(side=tk.LEFT, padx=5)
         
         self.entry = tk.Entry(input_frame, width=20, font=("Arial", 11), justify='center')
-        self.entry.pack(padx=5)
+        self.entry.pack(side=tk.LEFT, padx=5)
         self.entry.bind("<Return>", lambda event: self.check_guess())
+
+        tk.Label(main_frame, text="История попыток:", font=("Arial", 11)).pack(anchor='w', pady=(0, 5))
 
         # Кнопка проверки
         self.check_button = tk.Button(
@@ -177,28 +179,31 @@ class GuessNumberGame:
             messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
 
     def give_hint(self):
-    """Дать подсказку игроку"""
-    if not self.hint_used:
-        if self.secret_number % 2 == 0:
-            hint_text = "Число четное"
+        """Дать подсказку игроку"""
+        if not self.hint_used:
+            if self.secret_number % 2 == 0:
+                hint_text = "Число четное"
+            else:
+                hint_text = "Число нечетное"
+        
+            self.result_text.config(state=tk.NORMAL)
+            self.result_text.insert(tk.END, f"Подсказка: {hint_text}\n")
+            self.result_text.config(state=tk.DISABLED)
+            self.result_text.see(tk.END)
+        
+            self.hint_used = True
+            self.hint_button.config(state=tk.DISABLED)
         else:
-            hint_text = "Число нечетное"
-        
-        self.result_text.config(state=tk.NORMAL)
-        self.result_text.insert(tk.END, f"Подсказка: {hint_text}\n")
-        self.result_text.config(state=tk.DISABLED)
-        self.result_text.see(tk.END)
-        
-        self.hint_used = True
-        self.hint_button.config(state=tk.DISABLED)
-    else:
-        messagebox.showinfo("Подсказка", "Подсказка уже использована!")
+            messagebox.showinfo("Подсказка", "Подсказка уже использована!")
     
     def restart_game(self):
         self.secret_number = random.randint(1, 100)
         self.attempts = 0
         self.counter_label.config(text="Попытки: 0")
 
+        self.hint_used = False
+        self.hint_button.config(state=tk.NORMAL)
+    
         # Очищаем поле результатов
         self.result_text.config(state=tk.NORMAL)
         self.result_text.delete(1.0, tk.END)
@@ -217,6 +222,7 @@ class GuessNumberGame:
             width = simpledialog.askinteger(
                 "Ширина окна",
                 "Введите ширину окна (400-1200):",
+                parent=self.root,
                 initialvalue=self.root.winfo_width(),
                 minvalue=400,
                 maxvalue=1200
@@ -284,6 +290,7 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
 
 
