@@ -7,7 +7,10 @@ class GuessNumberGame:
     def __init__(self, root):
         self.root = root
         self.root.title("Угадай число")
-        self.root.geometry("500x400")
+        self.root.geometry("600x500")
+        self.root.minsize(550, 450)
+
+        self.root.iconbitmap('icon.ico')
 
         # Переменные игры
         self.secret_number = random.randint(1, 100)
@@ -15,8 +18,6 @@ class GuessNumberGame:
 
         # Создание интерфейса
         self.create_widgets()
-
-        # Меню
         self.create_menu()
 
     def create_menu(self):
@@ -94,6 +95,11 @@ class GuessNumberGame:
         # Текстовое поле для результата
         self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
         self.result_text.pack(pady=10)
+
+        # Полоса прокрутки
+        scrollbar = tk.Scrollbar(main_frame, command=self.result_text.yview)
+        self.result_text.config(yscrollcommand=scrollbar.set)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     def check_guess(self):
         try:
@@ -236,3 +242,4 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
