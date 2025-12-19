@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox, simpledialog
+from tkinter import Scrollbar
 import random
 
 
@@ -9,9 +10,10 @@ class GuessNumberGame:
         self.root.title("Угадай число")
         self.root.geometry("600x500")
         self.root.minsize(550, 450)
-
-        self.root.iconbitmap('icon.ico')
-
+        try:
+            self.root.iconbitmap('icon.ico')
+        except:
+            pass
         # Переменные игры
         self.secret_number = random.randint(1, 100)
         self.attempts = 0
@@ -268,5 +270,6 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
 
