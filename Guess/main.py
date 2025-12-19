@@ -177,9 +177,8 @@ class GuessNumberGame:
             messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
 
     def give_hint(self):
-        """Дать подсказку игроку"""
-        # Просто всегда даем подсказку
-        
+    """Дать подсказку игроку"""
+    if not self.hint_used:
         if self.secret_number % 2 == 0:
             hint_text = "Число четное"
         else:
@@ -189,8 +188,11 @@ class GuessNumberGame:
         self.result_text.insert(tk.END, f"Подсказка: {hint_text}\n")
         self.result_text.config(state=tk.DISABLED)
         self.result_text.see(tk.END)
-    
+        
         self.hint_used = True
+        self.hint_button.config(state=tk.DISABLED)
+    else:
+        messagebox.showinfo("Подсказка", "Подсказка уже использована!")
     
     def restart_game(self):
         self.secret_number = random.randint(1, 100)
@@ -282,6 +284,7 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
 
 
