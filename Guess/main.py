@@ -15,7 +15,8 @@ class GuessNumberGame:
         # Переменные игры
         self.secret_number = random.randint(1, 100)
         self.attempts = 0
-
+        self.hint_used = False
+        
         # Создание интерфейса
         self.create_widgets()
         self.create_menu()
@@ -92,6 +93,15 @@ class GuessNumberGame:
         )
         self.check_button.pack(pady=10)
 
+        # Кнопка подсказки
+        self.hint_button = tk.Button(
+            main_frame,
+            text="Подсказка",
+            command=self.give_hint,  # ← Новый метод
+            width=15
+        )
+        self.hint_button.pack(pady=5)
+        
         # Текстовое поле для результата
         self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
         self.result_text.pack(pady=10)
@@ -152,6 +162,22 @@ class GuessNumberGame:
         except Exception as e:
             messagebox.showerror("Ошибка", "Произошла ошибка: " + str(e))
 
+    def give_hint(self):
+        """Дать подсказку игроку"""
+        # Просто всегда даем подсказку
+        
+        if self.secret_number % 2 == 0:
+            hint_text = "Число четное"
+        else:
+            hint_text = "Число нечетное"
+        
+        self.result_text.config(state=tk.NORMAL)
+        self.result_text.insert(tk.END, f"Подсказка: {hint_text}\n")
+        self.result_text.config(state=tk.DISABLED)
+        self.result_text.see(tk.END)
+    
+        self.hint_used = True
+    
     def restart_game(self):
         self.secret_number = random.randint(1, 100)
         self.attempts = 0
@@ -242,4 +268,5 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
