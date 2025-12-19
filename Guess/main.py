@@ -78,12 +78,12 @@ class GuessNumberGame:
 
         # Поле для ввода
         input_frame = tk.Frame(main_frame)
-        input_frame.pack(pady=10)
+        input_frame.pack(pady=15)
 
-        tk.Label(input_frame, text="Ваше число:").pack(side=tk.LEFT, padx=5)
-
-        self.entry = tk.Entry(input_frame, width=15)
-        self.entry.pack(side=tk.LEFT, padx=5)
+        tk.Label(input_frame, text="Ваше число:", font=("Arial", 11)).pack(side=tk.LEFT, padx=5)
+        
+        self.entry = tk.Entry(input_frame, width=20, font=("Arial", 11), justify='center')
+        self.entry.pack(padx=5)
         self.entry.bind("<Return>", lambda event: self.check_guess())
 
         # Кнопка проверки
@@ -104,13 +104,25 @@ class GuessNumberGame:
         )
         self.hint_button.pack(pady=5)
         
+        # Фрейм для текстового поля и метки
+        result_frame = tk.Frame(main_frame)
+        result_frame.pack(fill=tk.BOTH, expand=True)
+
         # Текстовое поле для результата
-        self.result_text = tk.Text(main_frame, height=10, width=50, state=tk.DISABLED)
-        self.result_text.pack(pady=10)
+        self.result_text = tk.Text(
+            result_frame, 
+            height=12,  
+            width=60,  
+            state=tk.DISABLED,
+            font=("Arial", 10),  
+            bg="#F8F9F9",        
+            relief=tk.SUNKEN     
+        )
 
         # Полоса прокрутки
-        scrollbar = tk.Scrollbar(main_frame, command=self.result_text.yview)
+        scrollbar = tk.Scrollbar(result_frame, command=self.result_text.yview)
         self.result_text.config(yscrollcommand=scrollbar.set)
+        self.result_text.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     def check_guess(self):
@@ -270,6 +282,7 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
 
 
