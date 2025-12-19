@@ -245,32 +245,110 @@ class GuessNumberGame:
             messagebox.showerror("Ошибка", "Не удалось изменить размер окна: " + str(e))
 
     def show_rules(self):
-        rules = """
-        Правила игры:
-        1. Компьютер загадывает число от 1 до 100
-        2. Вы пытаетесь угадать это число
-        3. После каждой попытки вы получаете подсказку:
-           - "Загаданное число больше"
-           - "Загаданное число меньше"
-        4. Цель: угадать число за минимальное количество попыток
-        """
-        messagebox.showinfo("Правила игры", rules)
+        rules_text = """Правила игры "Угадай число"
+
+    1. Компьютер загадывает число от 1 до 100
+    2. Вы пытаетесь угадать это число
+    3. После каждой попытки вы получаете подсказку:
+       - "Загаданное число больше"
+       - "Загаданное число меньше"
+    4. Можно один раз за игру использовать подсказку
+    5. Цель: угадать число за минимальное количество попыток
+
+    Удачи в игре!"""
+
+        rules_window = tk.Toplevel(self.root)
+        rules_window.title("Правила игры")
+        rules_window.geometry("600x500")
+        rules_window.resizable(False, False)
+
+        rules_window.transient(self.root)
+        rules_window.grab_set()
+
+        # Центрирование относительно главного окна
+        x = self.root.winfo_x() + (self.root.winfo_width() // 2) - 300
+        y = self.root.winfo_y() + (self.root.winfo_height() // 2) - 250
+        rules_window.geometry(f"600x500+{x}+{y}")
+
+        # Содержимое окна
+        text_frame = tk.Frame(rules_window, padx=20, pady=20)
+        text_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Используем Text вместо Label для лучшего форматирования
+        rules_widget = tk.Text(
+            text_frame,
+            font=("Arial", 11),
+            wrap=tk.WORD,
+            height=12,
+            width=50,
+            bg=rules_window.cget("bg"),
+            relief=tk.FLAT,
+            bd=0
+        )
+        rules_widget.pack(fill=tk.BOTH, expand=True)
+
+        # Вставляем текст правил
+        rules_widget.insert(tk.END, rules_text)
+        rules_widget.config(state=tk.DISABLED)  # Делаем только для чтения
+
+        close_button = tk.Button(
+            rules_window,
+            text="Понятно",
+            command=rules_window.destroy,
+            width=15
+        )
+        close_button.pack(pady=20)
+
+        rules_window.focus_set()
 
     def show_about(self):
-        about = """
-        Игра "Угадай число"
+        about_text = """Игра "Угадай число"
 
-        Лабораторная работа по программированию
+    Лабораторная работа по программированию
 
-        Выполненные требования:
-        - Меню приложения
-        - Настройка размеров окна
-        - Обработка исключений
+    Выполненные требования:
+    - Меню приложения
+    - Настройка размеров окна
+    - Обработка исключений
+    - Система подсказок
 
-        Все исключения обрабатываются, 
-        программа не завершается при ошибках.
-        """
-        messagebox.showinfo("О программе", about)
+    Все исключения обрабатываются, 
+    программа не завершается при ошибках."""
+
+        about_window = tk.Toplevel(self.root)
+        about_window.title("О программе")
+        about_window.geometry("600x500")
+        about_window.resizable(False, False)
+
+        about_window.transient(self.root)
+        about_window.grab_set()
+
+        # Центрирование относительно главного окна
+        x = self.root.winfo_x() + (self.root.winfo_width() // 2) - 300
+        y = self.root.winfo_y() + (self.root.winfo_height() // 2) - 250
+        about_window.geometry(f"600x500+{x}+{y}")
+
+        # Содержимое окна
+        text_frame = tk.Frame(about_window, padx=20, pady=20)
+        text_frame.pack(fill=tk.BOTH, expand=True)
+
+        text_label = tk.Label(
+            text_frame,
+            text=about_text,
+            font=("Arial", 11),
+            justify=tk.LEFT
+        )
+        text_label.pack()
+
+        close_button = tk.Button(
+            about_window,
+            text="Закрыть",
+            command=about_window.destroy,
+            width=15
+        )
+        close_button.pack(pady=20)
+
+        about_window.focus_set()
 
 
 
@@ -290,6 +368,7 @@ if __name__ == "__main__":
     game.entry.focus()
 
     root.mainloop()
+
 
 
 
